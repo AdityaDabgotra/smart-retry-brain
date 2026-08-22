@@ -13,13 +13,12 @@ error_code: GATEWAY_ERROR, description: "Bank server is currently down" -> categ
 error_code: BAD_REQUEST_ERROR, description: "Card has expired" -> category: CARD_EXPIRED
 error_code: GATEWAY_ERROR, description: "Connection reset while contacting payment network" -> category: NETWORK_ERROR
 error_code: BAD_REQUEST_ERROR, description: "Transaction declined, reason unclear" -> category: UNKNOWN
+error_code: BAD_REQUEST_ERROR, description: "3DS authentication step could not be completed" -> category: OTP_MISMATCH
+error_code: GATEWAY_ERROR, description: "PSP gateway responded with an unexpected error code" -> category: NETWORK_ERROR
 
 Now classify this one:
 error_code: {error_code}
 description: {error_description}
-
-error_code: BAD_REQUEST_ERROR, description: "3DS authentication step could not be completed" -> category: OTP_MISMATCH
-error_code: GATEWAY_ERROR, description: "PSP gateway responded with an unexpected error code" -> category: NETWORK_ERROR
 
 Respond ONLY with valid JSON, no markdown fences, no extra text: {{"category": "ONE_OF_THE_SIX_VALUES_ABOVE", "confidence": 0.0-1.0, "reasoning": "one short sentence"}}"""
 
