@@ -27,7 +27,7 @@ Respond with only the explanation text, no preamble."""
 
 class HuggingFaceProvider(LLMProvider):
     def __init__(self)->None:
-        super().base_url = settings.ollama_base_url
+        self.base_url = settings.ollama_base_url
         self.model = settings.ollama_model
     
 
