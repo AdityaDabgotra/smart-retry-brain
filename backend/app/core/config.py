@@ -1,25 +1,29 @@
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     # App
-    app_name: str = "Smart Retry Brain"
-    environment: str = "development"
+    app_name: str = os.getenv("APP_NAME", "RetryBrain")
+    environment: str = os.getenv("ENVIRONMENT", "development")  # development | production
 
     # Database
-    database_url: str = "postgresql+psycopg://postgres:root%402004@localhost:5432/retry_brain"
+    database_url: str = os.getenv("DATABASE_URL","")
 
     # Redis
-    redis_url: str = "redis://localhost:6379/0"
+    redis_url: str = os.getenv("REDIS_URL", "")
 
     # LLM
-    llm_provider: str = "huggingface"  # huggingface | anthropic | openai
-    ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen2.5:3b"
+    llm_provider: str = os.getenv("llm_provider","")  # huggingface | anthropic | openai
+    ollama_base_url: str = os.getenv("ollama_base_url", "")   
+    ollama_model: str = os.getenv("ollama_model", "")
 
-    anthropic_api_key: str | None = None
-    openai_api_key: str | None = None
+    anthropic_api_key: str | None = os.getenv("anthropic_api_key", None)
+    openai_api_key: str | None = os.getenv("openai_api_key", None)
 
 
 
