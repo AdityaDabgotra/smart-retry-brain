@@ -4,14 +4,21 @@ import httpx
 from app.core.config import settings
 from app.llm.base import LLMProvider
 
-CLASSIFY_PROMPT = """You are a payment failure classifier for a payments system.
-Given an error code and description, classify it into exactly one category:
-INSUFFICIENT_FUNDS, BANK_TIMEOUT, OTP_MISMATCH, CARD_EXPIRED, NETWORK_ERROR, or UNKNOWN.
+CLASSIFY_PROMPT = """You are a payment failure classifier. Choose exactly one category from this fixed list — do not invent new values and do not reuse the input error_code as the category:
 
-Error code: {error_code}
-Error description: {error_description}
+INSUFFICIENT_FUNDS, BANK_TIMEOUT, OTP_MISMATCH, CARD_EXPIRED, NETWORK_ERROR, UNKNOWN
 
-Respond ONLY with valid JSON: {{"category": "...", "confidence": 0.0-1.0, "reasoning": "one short sentence"}}"""
+Examples:
+error_code: GATEWAY_ERROR, description: "Bank server is currently down" -> category: BANK_TIMEOUT
+error_code: BAD_REQUEST_ERROR, description: "Card has expired" -> category: CARD_EXPIRED
+error_code: GATEWAY_ERROR, description: "Connection reset while contacting payment network" -> category: NETWORK_ERROR
+error_code: BAD_REQUEST_ERROR, description: "Transaction declined, reason unclear" -> category: UNKNOWN
+
+Now classify this one:
+error_code: {error_code}
+description: {error_description}
+
+Respond ONLY with valid JSON, no markdown fences, no extra text: {{"category": "ONE_OF_THE_SIX_VALUES_ABOVE", "confidence": 0.0-1.0, "reasoning": "one short sentence"}}"""
 
 
 EXPLAIN_PROMPT = """You are writing a short, plain-English note for a merchant dashboard.
