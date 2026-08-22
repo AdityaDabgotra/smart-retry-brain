@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 .env
+.env.example
 node_modules/
 .next/
 *.egg-info/
