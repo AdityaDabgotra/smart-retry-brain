@@ -1,7 +1,8 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.classification.engine import classify_transaction
 from app.db.session import get_db
 from app.models.transaction import Transaction
 from app.models.enums import PaymentMethod, TransactionStatus
@@ -11,7 +12,9 @@ router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 
 @router.post("/payment-failed", response_model=TransactionOut, status_code=201)
-def payment_failed(payload: PaymentFailedWebhook, db: Session = Depends(get_db)):
+def payment_failed(
+    payload: PaymentFailedWebhook, background_tasks: BackgroundTasks, db: Session = Depends(get_db)
+):
     try:
         method = PaymentMethod(payload.payment_method)
     except ValueError:
@@ -36,5 +39,7 @@ def payment_failed(payload: PaymentFailedWebhook, db: Session = Depends(get_db))
     db.add(txn)
     db.commit()
     db.refresh(txn)
+
+    background_tasks.add_task(classify_transaction, txn.id)
 
     return TransactionOut(id=str(txn.id), external_txn_id=txn.external_txn_id, status=txn.status.value)
