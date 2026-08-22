@@ -11,6 +11,10 @@ FAILURE_TEMPLATES = [
     ("GATEWAY_ERROR", "Network issue while connecting to the bank, please retry", 0.20),
     ("BAD_REQUEST_ERROR", "OTP entered is incorrect", 0.12),
     ("BAD_REQUEST_ERROR", "The card has expired", 0.08),
+    # Ambiguous/messy — deliberately won't match clean rule patterns, forces LLM fallback
+    ("BAD_REQUEST_ERROR", "Txn declined by issuer bank, code 05", 0.03),
+    ("GATEWAY_ERROR", "PSP gateway responded with an unexpected error code", 0.03),
+    ("BAD_REQUEST_ERROR", "3DS authentication step could not be completed", 0.02),
 ]
 
 PAYMENT_METHODS = [
