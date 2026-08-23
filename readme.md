@@ -59,39 +59,39 @@ Tested on a synthetic dataset of **1,000 realistic failed transactions**, benchm
                                     │
                                     ▼
                     ┌───────────────────────────┐
-                    │   Rule Engine (regex)      │
-                    │   fast, deterministic,     │
-                    │   handles known patterns   │
+                    │   Rule Engine (regex)     │
+                    │   fast, deterministic,    │
+                    │   handles known patterns  │
                     └───────────────────────────┘
                                     │
                      confident match?      no match
                           │                   │
                           ▼                   ▼
                     Classified      ┌───────────────────────────┐
-                          │         │  Qwen2.5 (via Ollama)      │
-                          │         │  few-shot LLM classifier   │
-                          │         │  for ambiguous cases       │
+                          │         │  Qwen2.5 (via Ollama)     │
+                          │         │  few-shot LLM classifier  │
+                          │         │  for ambiguous cases      │
                           │         └───────────────────────────┘
                           │                   │
                           └─────────┬─────────┘
                                     ▼
                     ┌───────────────────────────┐
-                    │      Decision Engine        │
-                    │  category → action:         │
-                    │  • retry now                │
-                    │  • retry later (avoid        │
-                    │    bank downtime windows)    │
-                    │  • switch channel             │
-                    │  • flag for manual review     │
+                    │      Decision Engine      │
+                    │  category → action:       │
+                    │  • retry now              │
+                    │  • retry later (avoid     │
+                    │    bank downtime windows) │
+                    │  • switch channel         │
+                    │  • flag for manual review │
                     └───────────────────────────┘
                                     │
                 ┌───────────────────┴───────────────────┐
                 ▼                                         ▼
     ┌───────────────────────┐              ┌───────────────────────────┐
-    │  Qwen explains the     │              │   APScheduler fires the    │
-    │  decision in plain      │              │   retry against a          │
-    │  English for the        │              │   simulated bank at the    │
-    │  merchant dashboard     │              │   scheduled time            │
+    │  Qwen explains the    │              │   APScheduler fires the   │
+    │  decision in plain    │              │   retry against a         │
+    │  English for the      │              │   simulated bank at the   │
+    │  merchant dashboard   │              │   scheduled time          │
     └───────────────────────┘              └───────────────────────────┘
                                                         │
                                                         ▼
