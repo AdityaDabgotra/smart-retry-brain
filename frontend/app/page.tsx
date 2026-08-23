@@ -24,21 +24,22 @@ type Txn = {
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  RECOVERED: "text-mint",
-  FAILED_PERMANENTLY: "text-coral",
-  NEEDS_USER_ACTION: "text-amber",
-  SCHEDULED: "text-ledger-muted",
-  CLASSIFIED: "text-ledger-muted",
-  PENDING: "text-ledger-muted",
+  recovered: "text-[#3DDC84]",
+  failed_permanently: "text-[#E85D5D]",
+  needs_user_action: "text-[#F2A93B]",
+  scheduled: "text-[#8A93A3]",
+  classified: "text-[#8A93A3]",
+  pending: "text-[#8A93A3]",
+  retrying: "text-[#8A93A3]",
 };
 
 const CATEGORY_COLOR: Record<string, string> = {
-  INSUFFICIENT_FUNDS: "bg-amber",
-  BANK_TIMEOUT: "bg-coral",
-  NETWORK_ERROR: "bg-mint",
-  OTP_MISMATCH: "bg-ledger-muted",
-  CARD_EXPIRED: "bg-ledger-text",
-  UNKNOWN: "bg-hairline",
+  insufficient_funds: "bg-[#F2A93B]",
+  bank_timeout: "bg-[#E85D5D]",
+  network_error: "bg-[#3DDC84]",
+  otp_mismatch: "bg-[#8A93A3]",
+  card_expired: "bg-[#E8EAED]",
+  unknown: "bg-[#262B36]",
 };
 
 function inr(n: number) {
