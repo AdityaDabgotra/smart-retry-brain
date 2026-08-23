@@ -22,5 +22,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str | None = None
     openai_api_key: str | None = None
 
+    # 1 = real-time delays (production). Higher = compress delays for demo
+    # (e.g. 60 -> "30 min" retry fires in 30 sec). Never changes the labels
+    # shown to a merchant — only how fast wall-clock time actually passes.
+    demo_time_scale: int = 60
+
 
 settings = Settings()
