@@ -39,7 +39,8 @@ def execute_due_retries(db: Session) -> int:
 
         attempt_number = len(txn.attempts) + 1
         channel = decision.target_channel or txn.payment_method.value
-        success = simulate_retry(category) if category else False
+        original_channel = txn.payment_method.value
+        success = simulate_retry(category, channel, original_channel) if category else False
 
         db.add(
             RetryAttempt(
