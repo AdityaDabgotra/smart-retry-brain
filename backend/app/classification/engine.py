@@ -3,6 +3,7 @@ import uuid
 from app.classification.rules import match_rule
 from app.db.session import SessionLocal
 from app.decision.service import make_decision
+from app.explanation.service import generate_explanation
 from app.llm.factory import get_llm_provider
 from app.models.classification import FailureClassification
 from app.models.enums import ClassifiedBy, FailureCategory, TransactionStatus
@@ -46,10 +47,15 @@ async def classify_transaction(transaction_id: uuid.UUID) -> None:
         classification = await run_classification(txn.error_code, txn.error_description)
         classification.transaction_id = txn.id
         db.add(classification)
-        db.flush()  # ensure classification.id/category available before decision uses it
+        db.flush()
 
         txn.status = TransactionStatus.CLASSIFIED
-        make_decision(db, txn, classification)  # decides + advances status to SCHEDULED or NEEDS_USER_ACTION
+        decision = make_decision(db, txn, classification)
+        db.flush()
+
+        decision.explanation = await generate_explanation(
+            txn.error_description, classification.category, decision.action
+        )
 
         db.commit()
     finally:
