@@ -16,7 +16,7 @@ def get_llm_provider()->LLMProvider:
         from app.llm.providers.anthropic import AnthropicProvider
         return AnthropicProvider()
     
-    elif settings.llm.provider == "openai":
+    elif settings.llm_provider == "openai":
         from app.llm.providers.openai import OpenAIProvider
         return OpenAIProvider()
     
