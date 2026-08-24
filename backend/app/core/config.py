@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str | None = None
     openai_api_key: str | None = None
 
+
+    anthropic_model: str = "claude-sonnet-4-5"
+    openai_model: str = "gpt-4o-mini"
+
     # 1 = real-time delays (production). Higher = compress delays for demo
     # (e.g. 60 -> "30 min" retry fires in 30 sec). Never changes the labels
     # shown to a merchant — only how fast wall-clock time actually passes.
