@@ -6,7 +6,6 @@ from app.llm.base import LLMProvider
 
 @lru_cache
 def get_llm_provider()->LLMProvider:
-    """Change settings.llm_provider to switch between different LLM providers."""
 
     if settings.llm_provider == "huggingface":
         from app.llm.providers.huggingface import HuggingFaceProvider
