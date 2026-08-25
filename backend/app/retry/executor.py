@@ -9,6 +9,7 @@ from app.models.decision import RetryDecision
 from app.models.enums import AttemptOutcome, RetryAction, TransactionStatus
 from app.models.transaction import Transaction
 from app.simulator.bank import simulate_retry
+from app.decision.engine import avoid_bank_downtime
 
 MAX_ATTEMPTS = 3
 BACKOFF_BASE_MINUTES = 1
@@ -61,8 +62,10 @@ def execute_due_retries(db: Session) -> int:
             txn.status = TransactionStatus.FAILED_PERMANENTLY
         else:
             backoff = timedelta(minutes=BACKOFF_BASE_MINUTES * (BACKOFF_MULTIPLIER**attempt_number))
-            decision.scheduled_for = now + (backoff / settings.demo_time_scale)
-            # status stays SCHEDULED — will be picked up again next poll
+            next_time = now + (backoff / settings.demo_time_scale)
+            if decision.action == RetryAction.RETRY_SCHEDULED:
+                next_time = avoid_bank_downtime(next_time)
+            decision.scheduled_for = next_time
 
         executed += 1
 

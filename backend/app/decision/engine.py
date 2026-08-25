@@ -16,7 +16,7 @@ DOWNTIME_START_HOUR = 2
 DOWNTIME_END_HOUR = 4
 
 
-def _avoid_bank_downtime(scheduled_for: datetime) -> datetime:
+def avoid_bank_downtime(scheduled_for: datetime) -> datetime:
     if DOWNTIME_START_HOUR <= scheduled_for.hour < DOWNTIME_END_HOUR:
         return scheduled_for.replace(hour=DOWNTIME_END_HOUR, minute=0, second=0, microsecond=0)
     return scheduled_for
@@ -30,6 +30,6 @@ def decide(category: FailureCategory) -> dict:
         demo_delay = timedelta(minutes=delay_minutes) / settings.demo_time_scale
         scheduled_for = datetime.now(timezone.utc) + demo_delay
         if action == RetryAction.RETRY_SCHEDULED:
-            scheduled_for = _avoid_bank_downtime(scheduled_for)
+            scheduled_for = avoid_bank_downtime(scheduled_for)
 
     return {"action": action, "scheduled_for": scheduled_for, "target_channel": target_channel}
