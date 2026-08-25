@@ -181,6 +181,7 @@ uv run python scripts/run_scheduler.py
 
 ```bash
 cd frontend
+cp .env.example .env.local
 npm install
 npm run dev
 ```
